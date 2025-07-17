@@ -325,6 +325,10 @@ h1{margin: 0;}
   }
 }
 
+.nf-field-label .nf-label-span, .nf-field-label label{
+	color:var(--lblue);
+}
+
 .nf-form-cont .nf-field-container .nf-field-submit input[type="button"],
 .nf-form-cont .nf-field-container .nf-field-submit input[type="submit"] {
   background: #3f51b5;
