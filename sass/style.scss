@@ -1,0 +1,436 @@
+/*!
+Theme Name: Template
+Theme URI: http://underscores.me/
+Author: Anonymous
+Author URI: http://underscores.me/
+Description: Description
+Version: 1.0.0
+Tested up to: 5.4
+Requires PHP: 5.6
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: template
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned.
+
+Template is based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc.
+Underscores is distributed under the terms of the GNU GPL v2 or later.
+
+Normalizing styles have been helped along thanks to the fine work of
+Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
+*/
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Generic
+	- Normalize
+	- Box sizing
+# Base
+	- Typography
+	- Elements
+	- Links
+	- Forms
+## Layouts
+# Components
+	- Navigation
+	- Posts and pages
+	- Comments
+	- Widgets
+	- Media
+	- Captions
+	- Galleries
+# plugins
+	- Jetpack infinite scroll
+# Utilities
+	- Accessibility
+	- Alignments
+
+--------------------------------------------------------------*/
+
+// Import variables and mixins.
+@import "abstracts/abstracts";
+
+/*--------------------------------------------------------------
+# Generic
+--------------------------------------------------------------*/
+
+/* Normalize
+--------------------------------------------- */
+@import "generic/normalize";
+
+/* Box sizing
+--------------------------------------------- */
+@import "generic/box-sizing";
+
+/*--------------------------------------------------------------
+# Base
+--------------------------------------------------------------*/
+@import "base/base";
+
+/*--------------------------------------------------------------
+# Layouts
+--------------------------------------------------------------*/
+// @import "layouts/content-sidebar"; // Uncomment this line for a sidebar on right side of your content.
+// @import "layouts/sidebar-content"; // Uncomment this line for a sidebar on left side of your content.
+
+/*--------------------------------------------------------------
+# Components
+--------------------------------------------------------------*/
+@import "components/components";
+
+/*--------------------------------------------------------------
+# Plugins
+--------------------------------------------------------------*/
+
+/* Jetpack infinite scroll
+--------------------------------------------- */
+@import "plugins/jetpack/infinite-scroll";
+
+/*--------------------------------------------------------------
+# Utilities
+--------------------------------------------------------------*/
+
+/* Accessibility
+--------------------------------------------- */
+@import "utilities/accessibility";
+
+/* Alignments
+--------------------------------------------- */
+@import "utilities/alignments";
+
+.site-main .page-header{
+    background:linear-gradient(to right, #006f50, #2962ab);
+	padding:sizer(150px) sizer(25px) sizer(30px) sizer(25px);
+	position: relative;
+	overflow: hidden;
+	background-size:cover;
+	background-position: center top 15%;
+	background-repeat:no-repeat;
+	&:before{
+		content:'';
+		display: none;
+		opacity:0.75;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width:100%;
+		height:100%;
+		background:linear-gradient(to right, #006f50, #2962ab);
+	}
+	&.has-bg{
+		&:before{display: block;}
+	}
+	h1{
+		color:white;
+		font:400 sizer(60px) var(--serif);
+		margin: 0;
+		text-align: center;
+		text-shadow:2px 2px 5px rgba(0,0,0,0.3);
+		position: relative;
+	}
+	.header-image{
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+	}
+}
+
+.single-sermons, .single-events{
+	.the-content{
+		.sermon-info{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			flex-wrap: wrap;
+			column-gap:sizer(30px);
+			row-gap:sizer(10px);
+			margin-bottom: sizer(50px);
+			p{
+				color:#929292;
+				font-weight:700;
+				margin:0;
+				span{font-weight:300;}
+			}
+		}
+		audio{
+			margin: 0 auto sizer(30px) auto;
+			width:sizer(400px);
+			display: block;
+		}
+		.download{
+			text-align: center;
+			a{
+				text-decoration: none;
+				display: inline-block;
+				font-size:sizer(25px);
+				font-weight:700;
+				color:var(--lgreen);
+				border-bottom:2px solid rgba(21, 150, 93, 0.4);
+			}
+		}
+		.nav-previous + .nav-next{margin-top:sizer(20px);}
+		.nav-links{margin-top: sizer(50px);}
+		.nav-next, .nav-previous{
+			a{
+				color:var(--lgreen);
+				text-decoration: none;
+				font-weight:400;
+				font-size:sizer(18px);
+				border-bottom:2px solid rgba(21, 150, 93, 0.4);
+				display: inline-block;
+			}
+		}
+		.download, .nav-next, .nav-previous{
+			a{
+				transition:color 0.3s, border 0.3s;
+				&:hover, &:focus{
+					color:var(--lblue);
+					border-color:var(--lblue);
+				}
+			}
+		}
+	}
+}
+
+.the-content{
+	.nav-tabs{
+		border-bottom:none;
+		align-items: center;
+		justify-content: center;
+		row-gap:8px;
+		margin-left: 0;
+		margin-right: 0;
+		.nav-item .nav-link:not(.active) {
+			border-bottom: 1px solid rgba(black, 0.1);
+		}
+	}
+}
+
+.min-container {
+	text-align: left;
+	display: inline-flex;
+	justify-content: center;
+	align-items:flex-start;
+	flex-direction: column;
+	article, h2 {
+		text-align: left;
+		width: 100%;
+	}
+	article{
+		margin-bottom: sizer(20px);
+	}
+}
+
+
+.pills-box{
+	text-align: center;
+	padding:sizer(30px) sizer(50px);
+}
+.post-type-archive-sermons, body[class*="tax"][class*="term"]{
+	.the-content{
+		h2{
+			font-size:sizer(30px);
+		}
+		.sermon-info{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-start;
+			flex-wrap: wrap;
+			column-gap:sizer(20px);
+			row-gap:sizer(5px);
+			p{
+				font-size:sizer(18px);
+				margin: 0;
+			}
+		}
+	}
+}
+.taxonomy-footer{
+	text-align: center;
+	padding:sizer(40px) 0 sizer(20px) 0;
+	h3{font-size:sizer(25px)}
+}
+.page-books{
+	.the-content{
+		h2{
+			font-size:sizer(33px);
+		}
+		h3{
+			font-size:sizer(25px);
+		}
+	}
+}
+.page-series, .page-topics, .page-speakers{
+	.min-container{max-width:500px;}
+	.the-content{
+		h2{
+			font-size:sizer(25px);
+			line-height:1.2em;
+			margin-bottom: 0.5em;
+		}
+	}
+}
+.bible-columns{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap:sizer(40px);
+}
+
+.nav-links{
+	text-align: center;
+	width:100%;
+}
+.nav-title{font-weight:700;}
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+  font-family:var(--font);
+//   a:visited{color:inherit;}
+}
+
+.page-numbers {
+  display: inline-block;
+  padding: 0.6em 1em;
+  border-radius: 6px;
+  background-color: #f3f3f3;
+  color: #333;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.page-numbers:hover {
+  background-color: var(--lgreen);
+  color: #fff;
+}
+
+.page-numbers.current {
+  background-color: var(--lgreen);
+  color: #fff;
+  font-weight: bold;
+  cursor: default;
+}
+
+.page-numbers.prev,
+.page-numbers.next {
+  background-color: #e9e9e9;
+}
+
+.page-numbers.prev:hover,
+.page-numbers.next:hover {
+  background-color: var(--lgreen);
+  color: white;
+}
+
+
+
+body[class*=pastor], .page-leadership{
+	.the-content{
+		img{
+			border-radius:300px;
+			border:sizer(10px) solid white;
+			box-shadow:2px 2px sizer(10px) 0 rgba(black, 0.3);
+		}
+	}
+}
+.page-leadership{
+	.the-content{
+		.wp-block-columns{
+			align-items: center;
+			justify-content: center;
+		}
+		.wp-block-column{
+			max-width:sizer(350px);
+			text-align: center;
+		}
+		h2{
+			font-size:sizer(33px);
+		}
+		h3{
+			font-size:sizer(25px);
+		}
+	}
+}
+
+.page-give-to-the-chapel{
+	.the-content{
+		button.tithely-give-btn{
+			transition:background 0.3s;
+			background-color: var(--lgreen);
+			font-family: inherit;
+			font-weight: bold;
+			font-size: 25px;
+			padding: 15px 70px;
+			border-radius: 4px;
+			cursor: pointer;
+			background-image: none;
+			color: white;
+			text-shadow: none;
+			display: inline-block;
+			float: none;
+			border: none;
+			&:after{
+				content:'\f4c0';
+				font-family:'Font Awesome 6 Free';
+				font-weight:900;
+				margin-left:10px;
+				color:var(--green);
+				font-size:1.3em;
+			}
+			&:hover, &:focus{
+				background:var(--lblue);
+				&:after{
+					color:var(--blue);
+				}
+			}
+		}
+	}
+}
+
+.nav-tabs{
+	border-bottom:none;
+	align-items: center;
+	justify-content: center;
+	row-gap:8px;
+	.nav-item .nav-link:not(.active) {
+		border-bottom: 1px solid rgba(black, 0.1);
+	}
+}
+
+
+@media(max-width:640px){
+	.pills-box{
+		strong{
+			display: block;
+			margin-bottom: 15px;
+		}
+		.btn-group{
+			display: flex;
+			flex-wrap: wrap;
+			gap: sizer(10px);
+			align-items: center;
+			justify-content: center;
+		}
+		.sermon-pills {
+			flex-direction: row;
+		}
+
+		.sermon-pills .btn {
+			border-radius:7px !important;
+			flex:0 1 auto;
+		}
+	}
+}
