@@ -137,17 +137,25 @@ add_action( 'widgets_init', 'template_widgets_init' );
 /**
  * Enqueue scripts and styles.
  */
-function template_scripts() {
-	wp_style_add_data( 'template-style', 'rtl', 'replace' );
-	wp_enqueue_script('jquery');
-	wp_enqueue_script( 'template-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
-	wp_enqueue_style( 'font-awesome', '/wp-content/themes/template/fontawesome-free-6.7.2-web/css/all.min.css', array(), null );
-	wp_enqueue_style(
-		'google-fonts',
-		'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@100..900&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap',
-		[],
-		null
-	);
+ function template_scripts() {
+    wp_style_add_data( 'template-style', 'rtl', 'replace' );
+    wp_enqueue_script('jquery');
+    wp_enqueue_script( 'template-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+    wp_enqueue_script(
+        'fontawesome-kit',
+        'https://kit.fontawesome.com/f80f0f2fbe.js',
+        array(),
+        null,
+        false // Load in head; change to true if you want it in footer
+    );
+    add_action('wp_enqueue_scripts', 'enqueue_fontawesome_kit');
+    
+    wp_enqueue_style(
+        'google-fonts',
+        'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@100..900&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap',
+        [],
+        null
+    );
     wp_enqueue_style(
         'bootstrap-css',
         'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
@@ -161,15 +169,15 @@ function template_scripts() {
         '5.3.3',
         true
     );
-	// Homepage-specific styles
-	if ( is_page('home') OR is_page(6) ) {
-		wp_enqueue_style(
-			'home-styles',
-			get_template_directory_uri() . '/home.css',
-			['bootstrap-css'],
-			filemtime( get_template_directory() . '/home.css' )
-		);
-	}
+    // Homepage-specific styles
+    if ( is_page('home') OR is_page(6) ) {
+        wp_enqueue_style(
+            'home-styles',
+            get_template_directory_uri() . '/home.css',
+            ['bootstrap-css'],
+            filemtime( get_template_directory() . '/home.css' )
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'template_scripts' );
 
