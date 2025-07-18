@@ -483,7 +483,34 @@ add_filter('ninja_forms_submit_data', function ($form_data) {
 });
 
 
+// 1. Register the custom Sermons RSS feed
+add_action('init', function () {
+    add_feed('sermons', 'thechapel_sermons_feed');
+});
+
+// 2. Feed callback: load rss-sermons.php
 function thechapel_sermons_feed() {
+    error_log('✅ Sermons feed loaded'); // Debug log
     header('Content-Type: application/rss+xml; charset=' . get_option('blog_charset'), true);
-    get_template_part('rss', 'sermons'); // This loads rss-sermons.php
+    get_template_part('rss', 'sermons'); // expects theme/rss-sermons.php
+    exit;
 }
+
+// 3. Disable canonical redirect for this specific feed early
+add_filter('redirect_canonical', function ($redirect_url, $requested_url) {
+    // Check if it's our custom feed
+    if (strpos($_SERVER['REQUEST_URI'], '/feeds/sermons') !== false) {
+        error_log('🛑 Preventing canonical redirect on sermons feed.');
+        return false;
+    }
+    return $redirect_url;
+}, 10, 2);
+
+// 4. Absolute fallback (redundant, but ensures it gets served)
+add_action('parse_request', function ($wp) {
+    if ($wp->request === 'feeds/sermons' || $wp->request === 'feed/sermons') {
+        error_log('🔁 Serving sermons feed via parse_request fallback');
+        thechapel_sermons_feed();
+        exit;
+    }
+});
