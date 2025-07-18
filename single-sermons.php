@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying all single posts
+ * The template for displaying all single sermons
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
  *
@@ -12,16 +12,43 @@ get_header();
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<main id="primary" class="site-main">
-				<?php 
-				if(get_field('header_image_type') === 'Url'){
-					$header_image = get_field('header_image_url');
-				}else{
-					$header_image = get_field('header_image_upload');
-				}
-				if($header_image) : echo '<header class="page-header has-bg" style="background-image:url('.$header_image.')">';
-				else : echo '<header class="page-header">';
-				endif;
-				 ?>
+<?php
+// Try to get the header image from the sermon itself
+if ( get_field('header_image_type') === 'Url' ) {
+    $header_image = get_field('header_image_url');
+} else {
+    $header_image = get_field('header_image_upload');
+}
+$header_image = is_array($header_image) ? $header_image['url'] : $header_image;
+
+// If no image on the post, try the first "series" term
+if (empty($header_image)) {
+    $terms = get_the_terms(get_the_ID(), 'series');
+
+    if ($terms && !is_wp_error($terms)) {
+        $term = $terms[0]; // just the first series term
+        $acf_term_id = $term->taxonomy . '_' . $term->term_id;
+
+        if (get_field('image_type', $acf_term_id) === 'Upload') {
+            $image = get_field('image_upload', $acf_term_id);
+        } elseif (get_field('image_type', $acf_term_id) === 'Url') {
+            $image = get_field('image_url', $acf_term_id);
+        }
+
+        if (!empty($image)) {
+            $header_image = is_array($image) ? $image['url'] : $image;
+        }
+    }
+}
+
+// Output header tag
+if ($header_image) :
+    echo '<header class="page-header has-bg" style="background-image:url(' . esc_url($header_image) . ')">';
+else :
+    echo '<header class="page-header">';
+endif;
+?>
+
 		<?php 
 			the_title( '<h1 class="entry-title">', '</h1>' );
 		?>
@@ -33,6 +60,9 @@ get_header();
 			echo '<div class="the-content">';
 			echo '<div class="sermon-info">';
 			echo '<p class="date">'.get_the_date().'</p>';
+			if(get_the_terms( get_the_ID(), 'speaker' )){
+				echo '<p class="series"><span>Speaker: </span>'.get_the_terms( get_the_ID(), 'speaker' )[0]->name.'</p>';
+			}
 			if(get_the_terms( get_the_ID(), 'series' )){
 				echo '<p class="series"><span>Series: </span>'.get_the_terms( get_the_ID(), 'series' )[0]->name.'</p>';
 			}

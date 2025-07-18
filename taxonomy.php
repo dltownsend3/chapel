@@ -31,10 +31,66 @@ else {
 }
 ?>
 
+<!-- Series Thumbnails and default header -->
 <main class="site-main">
+<?php
+if ( is_tax() ) {
+    $term = get_queried_object();
+
+    if ( $term && ! is_wp_error( $term ) ) {
+        $thumbnail_url = '';
+
+        if ( $term->taxonomy === 'series' ) {
+            // For ACF fields on taxonomy terms, use "taxonomy_termID"
+            $acf_term_id = $term->taxonomy . '_' . $term->term_id;
+
+            $image = '';
+            $image_type = get_field( 'image_type', $acf_term_id );
+
+            if ( $image_type === 'Upload' ) {
+                $image = get_field( 'image_upload', $acf_term_id );
+            } else if ( $image_type === 'Url' ) {
+                $image = get_field( 'image_url', $acf_term_id );
+            }
+
+            if ( $image ) {
+                $thumbnail_url = is_array( $image ) ? $image['url'] : $image;
+            }
+        }
+
+        if ( $thumbnail_url ) {
+            // Show header with background image
+            ?>
+            <header class="page-header has-bg" style="background-image:url(<?php echo esc_url( $thumbnail_url ); ?>);">
+                <h1><?php echo esc_html( $taxTitle ); ?></h1>
+            </header>
+            <?php
+        } else {
+            // No background image — show simple header
+            ?>
+            <header class="page-header">
+                <h1><?php echo esc_html( $taxTitle ); ?></h1>
+            </header>
+            <?php
+        }
+    } else {
+        // Invalid term — fallback header
+        ?>
+        <header class="page-header">
+            <h1><?php echo esc_html( $taxTitle ); ?></h1>
+        </header>
+        <?php
+    }
+} else {
+    // Not a taxonomy archive — fallback header (if needed)
+    ?>
     <header class="page-header">
         <h1><?php echo esc_html( $taxTitle ); ?></h1>
     </header>
+    <?php
+}
+?>
+
 
 <div class="the-content">
 <?php 
