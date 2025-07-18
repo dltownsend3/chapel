@@ -481,3 +481,9 @@ add_filter('ninja_forms_submit_data', function ($form_data) {
 
     return $form_data;
 });
+
+
+function thechapel_sermons_feed() {
+    header('Content-Type: application/rss+xml; charset=' . get_option('blog_charset'), true);
+    get_template_part('rss', 'sermons'); // This loads rss-sermons.php
+}
