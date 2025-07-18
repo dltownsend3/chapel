@@ -142,6 +142,10 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	}
 }
 
+.tax-series, .single-sermons{
+	.site-main .page-header{background-position: center center;}
+}
+
 .single-sermons, .single-events{
 	.the-content{
 		.sermon-info{
