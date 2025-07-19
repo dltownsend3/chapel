@@ -75,7 +75,8 @@ h1{
         text-align: center;
         text-shadow:(1px 1px 4px rgba(0,0,0,0.3));
         text-wrap:pretty;
-        margin:0 0 sizer(50px) 0;
+        margin:0 auto sizer(50px) auto;
+        max-width: sizer(700px);
     }
 }
 
