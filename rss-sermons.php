@@ -18,7 +18,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
     <podcast:locked>yes</podcast:locked>
     <itunes:explicit>no</itunes:explicit>
     <itunes:category text="Religion & Spirituality"/>
-    <itunes:image href="https://thechapelgainesville.com/images/chapelpodcastthumbnail.png" />
+    <itunes:image href="https://thechapelgainesville.com/files/chapelpodcastthumbnail.png" />
 
     <?php
     $sermons = new WP_Query([
