@@ -1,6 +1,5 @@
-<?php
-echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
-?>
+<?php echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>'; ?>
+
 <rss version="2.0"
      xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
@@ -16,9 +15,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
       <itunes:name>The Chapel Gainesville</itunes:name>
       <itunes:email>dltownsend3@gmail.com</itunes:email>
     </itunes:owner>
-    <language>en-us</language>
     <itunes:applepodcastsverify>7b10e010-666c-11f0-aa9b-0ffc8476ecda</itunes:applepodcastsverify>
-    <podcast:locked>yes</podcast:locked>
     <itunes:explicit>no</itunes:explicit>
     <itunes:category text="Religion & Spirituality">
      <itunes:category text="Christianity"/>
@@ -55,11 +52,14 @@ if ($header_type === 'Url') {
 }
 $image_url = is_array($image_url) ? $image_url['url'] : $image_url;
 
+$series = '';
+
 // If no image found, fall back to first "series" term image
 if (empty($image_url)) {
     $series_terms = get_the_terms(get_the_ID(), 'series');
     if ($series_terms && !is_wp_error($series_terms)) {
         $term = $series_terms[0];
+        $series = $term->name;
         $acf_term_id = $term->taxonomy . '_' . $term->term_id;
 
         $term_image_type = get_field('image_type', $acf_term_id);
@@ -75,10 +75,36 @@ if (empty($image_url)) {
     }
 }
 
+$book = '';
+$book_terms = get_the_terms(get_the_ID(), 'book');
+if ($book_terms && !is_wp_error($book_terms)) {
+    $term = $book_terms[0];
+    $book = $term->name;
+}
+
+$speaker = '';
+$speaker_terms = get_the_terms(get_the_ID(), 'speaker');
+if ($speaker_terms && !is_wp_error($speaker_terms)) {
+    $term = $speaker_terms[0];
+    $speaker = $term->name;
+}
+
+
+$description = '';
+if(get_the_excerpt() !== ''){
+    $description = get_the_excerpt();
+}else{
+    if($speaker !== ''){$description .= $speaker;}
+    if($series !== ''){$description .= ' teaches from the series: '.$series;}
+    if($book !== ''){$description .= ', in the book of '.$book;}
+    if(get_field('passage_start') AND get_field('passage_end')){$description .= ', verses '.get_field('passage_start').' - '.get_field('passage_end');}
+    else if(get_field('passage_start')){$description .= ', verse '.get_field('passage_start');}
+}
+
 ?>
     <item>
       <title><?php the_title_rss(); ?></title>
-      <description><![CDATA[<?php the_excerpt_rss(); ?>]]></description>
+      <description><![CDATA[<?php echo $description; ?>]]></description>
       <link><?php the_permalink_rss(); ?></link>
       <guid><?php the_permalink_rss(); ?></guid>
       <pubDate><?php echo get_the_date('D, d M Y H:i:s O'); ?></pubDate>
