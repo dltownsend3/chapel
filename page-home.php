@@ -15,6 +15,10 @@
 get_header();
 /* Template Name: Home */
 $root = get_template_directory_uri();
+$settings = get_posts([
+    'post_type' => 'site_settings',
+    'numberposts' => 1,
+]);
 ?>
 
 	<main id="primary" class="site-main">
@@ -28,15 +32,19 @@ $root = get_template_directory_uri();
 					<div>
 						<h3>Stream</h3>
 						<div>
-							<a href="<?php echo get_option('spotify'); ?>" target=_><i class="fab fa-spotify"></i><span>Spotify</span></a>
-							<a href="<?php echo get_option('apple'); ?>" target=_><i class="fas fa-podcast"></i><span>Apple</span></a>
+						<?php 
+						if(get_field('spotify', $settings[0]->ID) !== ''){echo '<a href="'.get_field('spotify', $settings[0]->ID).'" target=_><i class="fab fa-spotify"></i><span>Spotify</span></a>';}
+						if(get_field('apple', $settings[0]->ID) !== ''){echo '<a href="'.get_field('apple', $settings[0]->ID).'" target=_><i class="fas fa-podcast"></i><span>Apple</span></a>';}
+						?>
 						</div>
 					</div>
 					<div>
 						<h3>Follow</h3>
 						<div>
-							<a href="<?php echo get_option('facebook'); ?>" target=_><i class="fab fa-facebook"></i></a>
-							<a href="<?php echo get_option('instagram'); ?>" target=_><i class="fab fa-instagram"></i></a>
+						<?php 
+						if(get_field('facebook', $settings[0]->ID) !== ''){echo '<a href="'.get_field('facebook', $settings[0]->ID).'" target=_><i class="fab fa-facebook"></i></a>';}
+						if(get_field('instagram', $settings[0]->ID) !== ''){echo '<a href="'.get_field('instagram', $settings[0]->ID).'" target=_><i class="fab fa-instagram"></i></a>';}
+						 ?>
 						</div>
 					</div>
 				</div>

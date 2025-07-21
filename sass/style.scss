@@ -171,6 +171,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 		}
 		.download{
 			text-align: center;
+			margin-bottom: sizer(50px);
 			a{
 				text-decoration: none;
 				display: inline-block;
@@ -205,6 +206,10 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 }
 
 .the-content{
+	.content-wrap{
+		max-width:1200px;
+		margin:auto;
+	}
 	.nav-tabs{
 		border-bottom:none;
 		align-items: center;

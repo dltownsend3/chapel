@@ -58,13 +58,16 @@ endif;
 		while ( have_posts() ) :
 			the_post();
 			echo '<div class="the-content">';
+			echo '<div class="content-wrap">';
 			echo '<div class="sermon-info">';
 			echo '<p class="date">'.get_the_date().'</p>';
 			if(get_the_terms( get_the_ID(), 'speaker' )){
 				echo '<p class="series"><span>Speaker: </span>'.get_the_terms( get_the_ID(), 'speaker' )[0]->name.'</p>';
+				$speaker = get_the_terms( get_the_ID(), 'speaker' )[0]->name;
 			}
 			if(get_the_terms( get_the_ID(), 'series' )){
 				echo '<p class="series"><span>Series: </span>'.get_the_terms( get_the_ID(), 'series' )[0]->name.'</p>';
+				$series = get_the_terms( get_the_ID(), 'series' )[0]->name;
 			}
 			if(get_the_terms( get_the_ID(), 'topic' )){
 				echo '<p class="topic"><span>Topic: </span>'.get_the_terms( get_the_ID(), 'topic' )[0]->name.'</p>';
@@ -76,6 +79,7 @@ endif;
 					if(get_field('passage_end')){echo ' - '.get_field('passage_end');}
 					echo '</p>';
 				}
+				$book = get_the_terms( get_the_ID(), 'book' )[0]->name;
 			}
 			echo '</div>';
 			if(get_field('audio_type') === 'Upload here'){
@@ -85,8 +89,21 @@ endif;
 			}
 			echo '<audio controls><source src="'.$audio.'" type="audio/mpeg"></audio>';
 			echo '<div class="download"><a href="'.$audio.'" download><span>Download</span> <i class="fas fa-download"></i></a></div>';
-			get_template_part( 'template-parts/content', get_post_type() );
-			echo '</div>';
+
+			// Description
+			$description = '';
+			if(get_the_excerpt() !== ''){
+				get_template_part( 'template-parts/content', get_post_type() );
+			}else{
+				if($speaker !== ''){$description .= $speaker;}
+				if($series !== ''){$description .= ' teaches from the series: '.$series;}
+				if($book !== ''){$description .= ', in the book of '.$book;}
+				if(get_field('passage_start') AND get_field('passage_end')){$description .= ', verses '.get_field('passage_start').' - '.get_field('passage_end');}
+				else if(get_field('passage_start')){$description .= ', verse '.get_field('passage_start');}
+			}
+			echo '<p class="text-center">'.$description.'</p>';
+			echo '</div>'; // .content-wrap
+			echo '</div>'; // .the-content
 
 		endwhile; // End of the loop.
 		?>

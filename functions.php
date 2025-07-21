@@ -515,3 +515,15 @@ add_action('parse_request', function ($wp) {
         exit;
     }
 });
+
+add_action('init', function() {
+    register_post_type('site_settings', [
+        'public' => false,
+        'show_ui' => true,
+        'label' => 'Site Settings',
+        'supports' => ['title'], // Only show the title field
+        'menu_icon' => 'dashicons-admin-generic',
+        'show_in_menu' => true,
+        'capability_type' => 'page',
+    ]);
+});

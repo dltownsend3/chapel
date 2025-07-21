@@ -7,6 +7,15 @@
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
+<?php 
+$settings = get_posts([
+    'post_type' => 'site_settings',
+    'numberposts' => 1,
+]);
+if (!empty($settings)) {
+    if(get_field('ga', $settings[0]->ID) !== ''){echo get_field('ga', $settings[0]->ID);}
+}
+ ?>
 </head>
 
 <body <?php body_class(); ?>>
@@ -67,13 +76,11 @@
 				</li>
 			</ul>
 			<div class="social">
-			<?php if( get_option('facebook') OR get_option('x_twitter') OR get_option('instagram') ){
-				if ( get_option('facebook') ) 
-					echo '<a href="'.get_option('facebook').'" class="facebook" target="_blank"><i class="fab fa-facebook"></i></a>';
-				if ( get_option('x_twitter') ) 
-					echo '<a href="'.get_option('x_twitter').'" class="twitter" target="_blank"><i class="fab fa-x-twitter"></i></a>';
-				if ( get_option('instagram') ) 
-					echo '<a href="'.get_option('instagram').'" class="instagram" target="_blank"><i class="fab fa-instagram"></i></a>';
+			<?php if( get_field('facebook', $settings[0]->ID) OR get_field('instagram', $settings[0]->ID) ){
+				if ( get_field('facebook', $settings[0]->ID) ) 
+					echo '<a href="'.get_field('facebook', $settings[0]->ID).'" class="facebook" target="_blank"><i class="fab fa-facebook"></i></a>';
+				if ( get_field('instagram', $settings[0]->ID) ) 
+					echo '<a href="'.get_field('instagram', $settings[0]->ID).'" class="instagram" target="_blank"><i class="fab fa-instagram"></i></a>';
 			} ?>
 			</div>
 		</div>

@@ -122,9 +122,7 @@ $(window).on('resize', function () {
 
 $('.menu-toggle').on('click', function(event){
 	event.preventDefault();
-	console.log('menu toggle clicked');
 	if ( $('.main-navigation').hasClass('toggled') ){
-		console.log('yep');
 		$('body').css('overflow-y','hidden');
 		$('#primary-menu').stop().fadeIn(300);
 	}else{
