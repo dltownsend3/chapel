@@ -3,7 +3,9 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
 ?>
 <rss version="2.0"
      xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
-     xmlns:content="http://purl.org/rss/1.0/modules/content/">
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:media="http://search.yahoo.com/mrss/"
+     xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sermons from The Chapel Gainesville</title>
     <link><?php bloginfo_rss('url'); ?></link>
@@ -14,12 +16,14 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
       <itunes:name>The Chapel Gainesville</itunes:name>
       <itunes:email>dltownsend3@gmail.com</itunes:email>
     </itunes:owner>
+    <language>en-us</language>
     <itunes:applepodcastsverify>7b10e010-666c-11f0-aa9b-0ffc8476ecda</itunes:applepodcastsverify>
-    <itunes:podcast-verify-token>7b10e010-666c-11f0-aa9b-0ffc8476ecda</itunes:podcast-verify-token>
     <podcast:locked>yes</podcast:locked>
     <itunes:explicit>no</itunes:explicit>
-    <itunes:category text="Religion & Spirituality"/>
-    <itunes:image href="https://thechapelgainesville.com/files/chapelpodcastthumbnail.png" />
+    <itunes:category text="Religion & Spirituality">
+     <itunes:category text="Christianity"/>
+    </itunes:category>
+    <itunes:image href="https://thechapelgainesville.com/files/chapelpodcastthumbnail.jpg" />
 
     <?php
     $sermons = new WP_Query([
