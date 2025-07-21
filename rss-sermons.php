@@ -7,14 +7,15 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
   <channel>
     <title>Sermons from The Chapel Gainesville</title>
     <link><?php bloginfo_rss('url'); ?></link>
-    <description>Expositional and topical sermons from Brad Williams, Richard Parker, and the elders. </description>
+    <description>Expositional and topical sermons from Brad Williams, Richard Parker, and the elders at The Chapel, a community church in Gainesville, Florida.</description>
     <language><?php bloginfo_rss('language'); ?></language>
     <itunes:author>The Chapel Gainesville</itunes:author>
     <itunes:owner>
       <itunes:name>The Chapel Gainesville</itunes:name>
       <itunes:email>dltownsend3@gmail.com</itunes:email>
     </itunes:owner>
-    <itunes:podcast-verify-token>852a9b00-6418-11f0-a106-1755f851bb64</itunes:podcast-verify-token>
+    <itunes:applepodcastsverify>7b10e010-666c-11f0-aa9b-0ffc8476ecda</itunes:applepodcastsverify>
+    <itunes:podcast-verify-token>7b10e010-666c-11f0-aa9b-0ffc8476ecda</itunes:podcast-verify-token>
     <podcast:locked>yes</podcast:locked>
     <itunes:explicit>no</itunes:explicit>
     <itunes:category text="Religion & Spirituality"/>
