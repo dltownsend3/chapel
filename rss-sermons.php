@@ -10,6 +10,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	xmlns:media="http://search.yahoo.com/mrss/" 
 	xmlns:content="http://purl.org/rss/1.0/modules/content/">
 	<channel>
+	<atom:link href="https://thechapelgainesville.com/feeds/sermons" rel="self" type="application/rss+xml" />
 	<title>Sermons from The Chapel Gainesville</title>
 	<link><?php bloginfo_rss('url'); ?></link>
 	<description>Expositional and topical sermons from Brad Williams, Richard Parker, and the elders at The Chapel, a community church in Gainesville, Florida.</description>
@@ -20,9 +21,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<itunes:email>dltownsend3@gmail.com</itunes:email>
 	</itunes:owner>
 	<itunes:summary>Expositional and topical sermons from Brad Williams, Richard Parker, and the elders at The Chapel, a community church in Gainesville, Florida.</itunes:summary>
-	<itunes:applepodcastsverify>7b10e010-666c-11f0-aa9b-0ffc8476ecda</itunes:applepodcastsverify>
-	<itunes:explicit>no</itunes:explicit>
-	<itunes:category text="Religion & Spirituality">
+	<podcast:txt purpose="applepodcastsverify">7b10e010-666c-11f0-aa9b-0ffc8476ecda</podcast:txt>
+	<itunes:explicit>false</itunes:explicit>
+	<itunes:category text="Religion &amp; Spirituality">
 		<itunes:category text="Christianity"/>
 	</itunes:category>
 	<itunes:image href="https://thechapelgainesville.com/files/chapelpodcastthumbnail.jpg" />
@@ -36,17 +37,19 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 
 	while ($sermons->have_posts()) : $sermons->the_post();
 		$audio_url = '';
+		$image_url = '';
+		$length = 0;
+		$audio_path = '';
 		if (get_field('audio_type') === 'Upload here') {
 			$audio_url = get_field('audio_upload');
 		} elseif (get_field('audio_type') === 'Link from elsewhere') {
 			$audio_url = get_field('audio_url');
 		}
-
+		$audio_path = ABSPATH . str_replace(home_url('/'), '', $audio_url);
+		$length = filesize($audio_path);
 		if (!$audio_url) continue;
 
 		$series_terms = get_the_terms(get_the_ID(), 'series');
-
-$image_url = '';
 
 // First: check the sermon post's own image
 $header_type = get_field('header_image_type');
@@ -114,7 +117,7 @@ $summary = $description; ?>
 			<link><?php the_permalink_rss(); ?></link>
 			<guid><?php the_permalink_rss(); ?></guid>
 			<pubDate><?php echo get_the_date('D, d M Y H:i:s O'); ?></pubDate>
-			<enclosure url="<?php echo esc_url($audio_url); ?>" type="audio/mpeg" />
+			<enclosure url="<?php echo esc_url($audio_url); ?>" length="<?php echo  esc_attr($length); ?>" type="audio/mpeg" />
 	<?php if ($image_url): ?>
 		<itunes:image href="<?php echo esc_url($image_url); ?>" />
 	<?php endif; ?>
