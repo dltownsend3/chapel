@@ -1,5 +1,7 @@
 <?php
-header('Content-Type: application/rss+xml; charset=UTF-8');
+header('Content-Type: application/rss+xml; charset=UTF-8');header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 
