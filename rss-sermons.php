@@ -1,5 +1,6 @@
 <?php
-header('Content-Type: application/rss+xml; charset=UTF-8');header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Content-Type: application/rss+xml; charset=UTF-8');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 header('Expires: 0');
 echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -24,11 +25,11 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	</itunes:owner>
 	<itunes:summary>Expositional and topical sermons from Brad Williams, Richard Parker, and the elders at The Chapel, a community church in Gainesville, Florida.</itunes:summary>
 	<podcast:txt purpose="applepodcastsverify">7b10e010-666c-11f0-aa9b-0ffc8476ecda</podcast:txt>
-	<itunes:explicit>false</itunes:explicit>
+	<itunes:explicit>clean</itunes:explicit>
 	<itunes:category text="Religion &amp; Spirituality">
 		<itunes:category text="Christianity"/>
 	</itunes:category>
-	<itunes:image href="https://thechapelgainesville.com/files/chapelpodcastthumbnail.jpg" />
+	<itunes:image href="https://thechapelgainesville.com/files/chapelpodcastthumbnail2.jpg" />
 
 	<?php
 	$sermons = new WP_Query([
