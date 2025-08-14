@@ -25,7 +25,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	</itunes:owner>
 	<itunes:summary>Expositional and topical sermons from Brad Williams, Richard Parker, and the elders at The Chapel, a community church in Gainesville, Florida.</itunes:summary>
 	<podcast:txt purpose="applepodcastsverify">7b10e010-666c-11f0-aa9b-0ffc8476ecda</podcast:txt>
-	<itunes:explicit>clean</itunes:explicit>
+	<itunes:explicit>false</itunes:explicit>
 	<itunes:category text="Religion &amp; Spirituality">
 		<itunes:category text="Christianity"/>
 	</itunes:category>
@@ -119,6 +119,7 @@ $summary = $description; ?>
 			<itunes:summary><![CDATA[<?php echo $summary; ?>]]></itunes:summary>
 			<link><?php the_permalink_rss(); ?></link>
 			<guid><?php the_permalink_rss(); ?></guid>
+			<itunes:explicit>false</itunes:explicit>
 			<pubDate><?php echo get_the_date('D, d M Y H:i:s O'); ?></pubDate>
 			<enclosure url="<?php echo esc_url($audio_url); ?>" length="<?php echo  esc_attr($length); ?>" type="audio/mpeg" />
 	<?php if ($image_url): ?>

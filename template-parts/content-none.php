@@ -15,6 +15,7 @@
 	</header><!-- .page-header -->
 
 	<div class="page-content">
+<div class="the-content">
 		<?php
 		if ( is_home() && current_user_can( 'publish_posts' ) ) :
 
@@ -34,18 +35,17 @@
 		elseif ( is_search() ) :
 			?>
 
-			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'template' ); ?></p>
-			<?php
-			get_search_form();
+			<h3 class="text-center">Sorry, but nothing matched your search terms. <a class="search-trigger">Please try again</a> with some different keywords.</h3>
+			<?php 
 
 		else :
 			?>
 
-			<p><?php esc_html_e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', 'template' ); ?></p>
-			<?php
-			get_search_form();
+			<h3 class="text-center">It seems we can't find what you're looking for. Perhaps <a class="search-trigger">searching can help</a></h3>
+			<?php 
 
 		endif;
 		?>
+		</div>
 	</div><!-- .page-content -->
 </section><!-- .no-results -->

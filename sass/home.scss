@@ -71,12 +71,12 @@ h1{
     text-align: center;
     p{
         color:white;
-        font:400 sizer(30px) var(--font);
+        font:400 sizer(27px) var(--font);
         text-align: center;
         text-shadow:(1px 1px 4px rgba(0,0,0,0.3));
-        text-wrap:pretty;
+        text-wrap:balance;
         margin:0 auto sizer(50px) auto;
-        max-width: sizer(700px);
+        max-width: sizer(950px);
     }
 }
 

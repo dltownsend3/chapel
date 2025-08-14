@@ -137,31 +137,54 @@ add_action( 'widgets_init', 'template_widgets_init' );
 /**
  * Enqueue scripts and styles.
  */
- function template_scripts() {
+function template_scripts() {
     wp_style_add_data( 'template-style', 'rtl', 'replace' );
+
+    // jQuery
     wp_enqueue_script('jquery');
-    wp_enqueue_script( 'template-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+
+    // Theme scripts
+    wp_enqueue_script(
+        'template-navigation',
+        get_template_directory_uri() . '/js/navigation.js',
+        array(),
+        filemtime( get_template_directory() . '/js/navigation.js' ),
+        true // load in footer
+    );
+
+    // Font Awesome
     wp_enqueue_script(
         'fontawesome-kit',
         'https://kit.fontawesome.com/f80f0f2fbe.js',
         array(),
         null,
-        false // Load in head; change to true if you want it in footer
+        false
     );
-    add_action('wp_enqueue_scripts', 'enqueue_fontawesome_kit');
-    
+
+    // Theme styles
+    wp_enqueue_style(
+        'template-style',
+        get_stylesheet_uri(),
+        array(),
+        filemtime( get_template_directory() . '/style.css' )
+    );
+
+    // Google Fonts
     wp_enqueue_style(
         'google-fonts',
         'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@100..900&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap',
-        [],
+        array(),
         null
     );
+
+    // Bootstrap
     wp_enqueue_style(
         'bootstrap-css',
         'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
         array(),
         '5.3.3'
     );
+
     wp_enqueue_script(
         'bootstrap-js',
         'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
@@ -169,17 +192,19 @@ add_action( 'widgets_init', 'template_widgets_init' );
         '5.3.3',
         true
     );
+
     // Homepage-specific styles
-    if ( is_page('home') OR is_page(6) ) {
+    if ( is_page('home') || is_page(6) ) {
         wp_enqueue_style(
             'home-styles',
             get_template_directory_uri() . '/home.css',
-            ['bootstrap-css'],
+            array('bootstrap-css'),
             filemtime( get_template_directory() . '/home.css' )
         );
     }
 }
 add_action( 'wp_enqueue_scripts', 'template_scripts' );
+
 
 function fix_styles_order() {
     // Remove old style.css
@@ -478,7 +503,7 @@ add_filter('ninja_forms_submit_data', function ($form_data) {
     }
 
     // Optional: Log for debugging
-    error_log("Selected person: $selected_person | Email: $selected_email");
+    // error_log("Selected person: $selected_person | Email: $selected_email");
 
     return $form_data;
 });
@@ -491,7 +516,7 @@ add_action('init', function () {
 
 // 2. Feed callback: load rss-sermons.php
 function thechapel_sermons_feed() {
-    error_log('✅ Sermons feed loaded'); // Debug log
+    // error_log('✅ Sermons feed loaded'); // Debug log
     header('Content-Type: application/rss+xml; charset=' . get_option('blog_charset'), true);
     get_template_part('rss', 'sermons'); // expects theme/rss-sermons.php
     exit;
@@ -501,7 +526,7 @@ function thechapel_sermons_feed() {
 add_filter('redirect_canonical', function ($redirect_url, $requested_url) {
     // Check if it's our custom feed
     if (strpos($_SERVER['REQUEST_URI'], '/feeds/sermons') !== false) {
-        error_log('🛑 Preventing canonical redirect on sermons feed.');
+        // error_log('🛑 Preventing canonical redirect on sermons feed.');
         return false;
     }
     return $redirect_url;
@@ -510,7 +535,7 @@ add_filter('redirect_canonical', function ($redirect_url, $requested_url) {
 // 4. Absolute fallback (redundant, but ensures it gets served)
 add_action('parse_request', function ($wp) {
     if ($wp->request === 'feeds/sermons' || $wp->request === 'feed/sermons') {
-        error_log('🔁 Serving sermons feed via parse_request fallback');
+        // error_log('🔁 Serving sermons feed via parse_request fallback');
         thechapel_sermons_feed();
         exit;
     }

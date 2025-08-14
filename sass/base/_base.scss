@@ -1,5 +1,5 @@
-
-@use 'sass:math'; // Import Sass math module
+@use 'sass:math';
+@use "sass:string";
 
 /* Typography
 --------------------------------------------- */
@@ -47,42 +47,41 @@
 // MIXINS
 
 @function get-unit($value) {
-  @if type-of($value) == 'number' and not unitless($value) {
-    @return unit($value);
-  }
-  @return null;
+  // Converts value to string, then slices to extract the unit
+  @return string.slice(#{$value * 0 + ""}, 2);
 }
 
-@function strip-unit($value) {
-  @if type-of($value) == 'number' and not unitless($value) {
-    @return math.div($value, $value * 0 + 1);
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
   }
-  @return $value;
+  @return $number;
 }
-
 
 @function sizer($value, $minvalue: null) {
-  $unit: get-unit($value);
   $val: strip-unit($value);
-  $is-negative: $value < 0;
+  $unit: get-unit($value);
 
-  $val-abs: math.abs($val); // Now truly unitless
-  $raw-min: $val-abs * 0.7;
-
-  $min-abs: if(
-    $minvalue != null,
-    strip-unit($minvalue),
-    if($val-abs > 16, $raw-min, $val-abs)
-  );
-
-  $max-abs: $val-abs;
-  $preferred-abs: math.div($val-abs, 12.8);
-
-  @if $is-negative {
-    @return clamp(-#{$max-abs}#{$unit}, -#{$preferred-abs}vw, -#{$min-abs}#{$unit});
-  } @else {
-    @return clamp(#{$min-abs}#{$unit}, #{$preferred-abs}vw, #{$max-abs}#{$unit});
+  @if $unit == "" {
+    @error "No unit found in value `#{$value}`. Please pass a unit (e.g., `160px`).";
   }
+
+  $abs-val: abs($val);
+  $raw-min: $abs-val * 0.7;
+  $min-abs: if($minvalue != null, abs(strip-unit($minvalue)), if($raw-min < 16, 16, $raw-min));
+  $preferred: math.div($val, 12.8);
+  $min: $raw-min;
+  $max: $preferred;
+
+  @if $val < 0 {
+    $min: -1 * max($abs-val, $min-abs);
+    $max: -1 * min($abs-val, $min-abs);
+  } @else {
+    $min: min($abs-val, $min-abs);
+    $max: max($abs-val, $min-abs);
+  }
+
+  @return clamp(#{$min}#{$unit}, #{$preferred}vw, #{$max}#{$unit});
 }
 
 
