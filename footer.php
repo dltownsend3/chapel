@@ -17,7 +17,7 @@ $settings = get_posts([
 ?>
 
 	<footer id="colophon" class="site-footer">
-		<?php echo '<a href="'.get_the_permalink(6).'" class="logo"><img src="'.$root.'/images/logob.svg" alt="Logo"></a>'; ?>
+		<?php echo '<a href="'.get_the_permalink(6).'" class="logo"><img src="'.$root.'/images/logob.svg" alt="Logo | '.get_bloginfo('name').'"></a>'; ?>
 		<div class="social">
 			<?php 
 			if(get_field('facebook', $settings[0]->ID) !== ''){echo '<a href="'.get_field('facebook', $settings[0]->ID).'" class="fab fa-facebook" target=_></a>';}
