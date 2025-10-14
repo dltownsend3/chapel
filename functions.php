@@ -203,13 +203,34 @@ function template_scripts() {
     );
 
     // Font Awesome in footer
-    wp_enqueue_script(
-        'fontawesome-kit',
-        'https://kit.fontawesome.com/f80f0f2fbe.js',
+    // wp_enqueue_script(
+    //     'fontawesome-kit',
+    //     'https://kit.fontawesome.com/f80f0f2fbe.js',
+    //     array(),
+    //     null,
+    //     true
+    // );
+
+    // Self-hosted Font Awesome
+    wp_enqueue_style(
+        'fontawesome',
+        content_url('uploads/fontawesome/css/all.css'), // Adjust the path if needed
         array(),
-        null,
-        true
+        filemtime(ABSPATH . 'wp-content/uploads/fontawesome/css/all.css')
     );
+
+    // Make Font Awesome async/non-blocking
+    add_filter('style_loader_tag', function($tag, $handle){
+        if ($handle === 'fontawesome') {
+            $tag = str_replace(
+                "rel='stylesheet'",
+                "rel='stylesheet' media='print' onload=\"this.media='all'\"",
+                $tag
+            );
+        }
+        return $tag;
+    }, 10, 2);
+
 
     // Google Fonts
     wp_enqueue_style(
@@ -218,6 +239,17 @@ function template_scripts() {
         array(),
         null
     );
+    add_filter('style_loader_tag', function($tag, $handle){
+        if ($handle === 'google-fonts') {
+            $tag = str_replace(
+                "rel='stylesheet'",
+                "rel='stylesheet' media='print' onload=\"this.media='all'\"",
+                $tag
+            );
+        }
+        return $tag;
+    }, 10, 2);
+
 
     // Bootstrap (only if NOT homepage, ID 6)
     $bootstrap_deps = [];
