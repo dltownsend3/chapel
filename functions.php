@@ -478,7 +478,9 @@ add_filter('ninja_forms_submit_data', function ($form_data) {
         'maya' => 'mayabethpesek@gmail.com',
         'kirsten' => 'brownoutgville@gmail.com',
         'kevin' => 'switzersknd@hotmail.com',
-        'lee' => 'dltownsend3@gmail.com'
+        'lee' => 'dltownsend3@gmail.com',
+        'joel' => 'joliver.parker@gmail.com',
+        'danny' => 'daniel.madrid10@gmail.com'
     ];
 
     $selected_person = '';
