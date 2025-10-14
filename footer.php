@@ -34,9 +34,12 @@ $settings = get_posts([
 		</div>
 		<div class="site-info">
 			<?php if(get_field('address', $settings[0]->ID) !== ''){ ?>
-			<p class="address"><a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode(get_field('address', $settings[0]->ID)); ?>" target=_><?php echo get_field('address', $settings[0]->ID); ?></a></p>
+			<p class="address">
+				<a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode(get_field('address', $settings[0]->ID)); ?>" target=_><?php echo get_field('address', $settings[0]->ID); ?></a>
+				<br><br>
+				<a href="tel:3524485773">(352) 448-5773</a>
+			</p>
 			<?php } ?>
-			<p class="phone"><a href="tel:3524485773">(352) 448-5773</a></p>
 			<p class="copyright">&copy;<?php echo date('Y') . ' ' . get_bloginfo('name'); ?></p>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
