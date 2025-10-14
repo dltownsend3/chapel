@@ -134,6 +134,56 @@ function template_widgets_init() {
 }
 add_action( 'widgets_init', 'template_widgets_init' );
 
+
+// Inline fold.css for homepage (ID 6)
+function inline_fold_css() {
+    if ( !is_page(6) ) return; // Only on homepage
+
+    $css_file = get_template_directory() . '/fold.css';
+
+    if ( file_exists( $css_file ) ) {
+        $css_content = file_get_contents( $css_file );
+
+        // Fix relative URLs (images, fonts)
+        $css_content = preg_replace_callback(
+            '/url\([\'"]?(?!https?:|data:)([^)\'"]+)[\'"]?\)/i',
+            function( $matches ) {
+                return 'url(' . get_template_directory_uri() . '/' . ltrim( $matches[1], '/' ) . ')';
+            },
+            $css_content
+        );
+
+        echo "<style id='fold-css-inline'>{$css_content}</style>\n";
+    }
+}
+add_action( 'wp_head', 'inline_fold_css', 1 ); // Early in head
+
+
+// Enqueue home.css deferred
+function defer_home_css() {
+    if ( !is_page(6) ) return;
+
+    wp_enqueue_style(
+        'home-styles',
+        get_template_directory_uri() . '/home.css',
+        array(),
+        filemtime( get_template_directory() . '/home.css' )
+    );
+
+    // Make async using media=print trick
+    add_filter('style_loader_tag', function($tag, $handle){
+        if ($handle === 'home-styles') {
+            $tag = str_replace(
+                "rel='stylesheet'",
+                "rel='stylesheet' media='print' onload=\"this.media='all'\"",
+                $tag
+            );
+        }
+        return $tag;
+    }, 10, 2);
+}
+add_action( 'wp_enqueue_scripts', 'defer_home_css', 20 );
+
 /**
  * Enqueue scripts and styles optimized for speed
  */
@@ -197,41 +247,10 @@ function template_scripts() {
             filemtime( get_stylesheet_directory() . '/style.css' )
         );
     }
-
-    // Homepage-specific styles
-    if ( is_page(6) ) {
-        // Above-the-fold styles (critical CSS)
-        wp_enqueue_style(
-            'fold-css',
-            get_template_directory_uri() . '/fold.css',
-            array(), // no dependencies, loads first
-            filemtime( get_stylesheet_directory() . '/fold.css' )
-        );
-    }
-
-if ( is_page(6) ) {
-    wp_enqueue_style(
-        'home-styles',
-        get_template_directory_uri() . '/home.css',
-        array('fold-css'), // depend on fold.css so it loads after
-        filemtime( get_stylesheet_directory() . '/home.css' )
-    );
-
-    // Make home.css async with media=print
-    add_filter('style_loader_tag', function($tag, $handle){
-        if ($handle === 'home-styles') {
-            $tag = str_replace(
-                "rel='stylesheet'",
-                "rel='stylesheet' media='print' onload=\"this.media='all'\"",
-                $tag
-            );
-        }
-        return $tag;
-    }, 10, 2);
-}
-
 }
 add_action( 'wp_enqueue_scripts', 'template_scripts' );
+
+
 
 
 // -------------------------
