@@ -135,12 +135,12 @@ function template_widgets_init() {
 add_action( 'widgets_init', 'template_widgets_init' );
 
 /**
- * Enqueue scripts and styles.
+ * Enqueue scripts and styles optimized for speed
  */
 function template_scripts() {
     wp_style_add_data( 'template-style', 'rtl', 'replace' );
 
-    // jQuery
+    // jQuery (moved to footer)
     wp_enqueue_script('jquery');
 
     // Theme scripts
@@ -152,7 +152,7 @@ function template_scripts() {
         true // load in footer
     );
 
-    // Font Awesome
+    // Font Awesome in footer
     wp_enqueue_script(
         'fontawesome-kit',
         'https://kit.fontawesome.com/f80f0f2fbe.js',
@@ -169,7 +169,19 @@ function template_scripts() {
         null
     );
 
-    // Bootstrap (only if NOT home page, ID 6)
+    // Google Fonts async (media="print" trick)
+    add_filter('style_loader_tag', function($tag, $handle){
+        if ($handle === 'google-fonts') {
+            $tag = str_replace(
+                "rel='stylesheet'",
+                "rel='stylesheet' media='print' onload=\"this.media='all'\"",
+                $tag
+            );
+        }
+        return $tag;
+    }, 10, 2);
+
+    // Bootstrap (only if NOT homepage, ID 6)
     $bootstrap_deps = [];
     if ( !is_page(6) ) {
         wp_enqueue_style(
@@ -190,17 +202,15 @@ function template_scripts() {
         $bootstrap_deps[] = 'bootstrap-css';
     }
 
-    // Interior stylesheet
-    if ( !is_page(6) ) {
-        wp_enqueue_style(
-            'main-style',
-            get_stylesheet_uri(),
-            $bootstrap_deps, // only depends on Bootstrap if loaded
-            filemtime( get_stylesheet_directory() . '/style.css' )
-        );
-    }
+    // Main stylesheet (depends on Bootstrap if loaded)
+    wp_enqueue_style(
+        'main-style',
+        get_stylesheet_uri(),
+        $bootstrap_deps,
+        filemtime( get_stylesheet_directory() . '/style.css' )
+    );
 
-    // Homepage-specific styles
+    // Homepage-specific styles (async with media="print")
     if ( is_page(6) ) {
         wp_enqueue_style(
             'home-styles',
@@ -208,13 +218,61 @@ function template_scripts() {
             array(),
             filemtime( get_template_directory() . '/home.css' )
         );
+
+        add_filter('style_loader_tag', function($tag, $handle){
+            if ($handle === 'home-styles') {
+                $tag = str_replace(
+                    "rel='stylesheet'",
+                    "rel='stylesheet' media='print' onload=\"this.media='all'\"",
+                    $tag
+                );
+            }
+            return $tag;
+        }, 10, 2);
     }
 }
 add_action( 'wp_enqueue_scripts', 'template_scripts' );
 
-/**
- * Google fonts preconnect
- */
+
+// -------------------------
+// Additional optimizations
+// -------------------------
+
+// Remove jQuery Migrate
+function remove_jquery_migrate( $scripts ) {
+    if ( ! is_admin() && isset( $scripts->registered['jquery'] ) ) {
+        $scripts->registered['jquery']->deps = array_diff(
+            $scripts->registered['jquery']->deps,
+            ['jquery-migrate']
+        );
+    }
+}
+add_action( 'wp_default_scripts', 'remove_jquery_migrate' );
+
+// Move jQuery to footer
+function move_jquery_to_footer( $scripts ) {
+    if ( ! is_admin() ) {
+        if ( isset( $scripts->registered['jquery'] ) ) {
+            $scripts->add_data( 'jquery', 'group', 1 );
+            $scripts->add_data( 'jquery-core', 'group', 1 );
+        }
+        if ( isset( $scripts->registered['jquery-migrate'] ) ) {
+            $scripts->add_data( 'jquery-migrate', 'group', 1 );
+        }
+    }
+}
+add_action( 'wp_default_scripts', 'move_jquery_to_footer' );
+
+// Dequeue Gutenberg block CSS on homepage (ID 6)
+function dequeue_block_library_css() {
+    if ( is_page(6) && ! is_admin() ) {
+        wp_dequeue_style( 'wp-block-library' );
+        wp_dequeue_style( 'wp-block-library-theme' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'dequeue_block_library_css', 100 );
+
+// Google Fonts preconnect
 function mytheme_resource_hints($hints, $relation_type) {
     if ('preconnect' === $relation_type) {
         $hints[] = 'https://fonts.googleapis.com';
@@ -226,6 +284,7 @@ function mytheme_resource_hints($hints, $relation_type) {
     return $hints;
 }
 add_filter('wp_resource_hints', 'mytheme_resource_hints', 10, 2);
+
 
 
 
