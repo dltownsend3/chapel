@@ -190,13 +190,15 @@ function template_scripts() {
         $bootstrap_deps[] = 'bootstrap-css';
     }
 
-    // Main theme stylesheet (always loads)
-    wp_enqueue_style(
-        'main-style',
-        get_stylesheet_uri(),
-        $bootstrap_deps, // only depends on Bootstrap if loaded
-        filemtime( get_stylesheet_directory() . '/style.css' )
-    );
+    // Interior stylesheet
+    if ( !is_page(6) ) {
+        wp_enqueue_style(
+            'main-style',
+            get_stylesheet_uri(),
+            $bootstrap_deps, // only depends on Bootstrap if loaded
+            filemtime( get_stylesheet_directory() . '/style.css' )
+        );
+    }
 
     // Homepage-specific styles
     if ( is_page(6) ) {
