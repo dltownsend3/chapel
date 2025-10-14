@@ -183,7 +183,7 @@ function template_scripts() {
 
     // Bootstrap (only if NOT homepage, ID 6)
     $bootstrap_deps = [];
-    if ( !is_page(6) ) {
+    if ( ! is_page(6) ) {
         wp_enqueue_style(
             'bootstrap-css',
             'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
@@ -200,17 +200,17 @@ function template_scripts() {
         );
 
         $bootstrap_deps[] = 'bootstrap-css';
+
+        // Main stylesheet (interior pages only, depends on Bootstrap if loaded)
+        wp_enqueue_style(
+            'main-style',
+            get_stylesheet_uri(),
+            $bootstrap_deps,
+            filemtime( get_stylesheet_directory() . '/style.css' )
+        );
     }
 
-    // Main stylesheet (depends on Bootstrap if loaded)
-    wp_enqueue_style(
-        'main-style',
-        get_stylesheet_uri(),
-        $bootstrap_deps,
-        filemtime( get_stylesheet_directory() . '/style.css' )
-    );
-
-    // Homepage-specific styles (async with media="print")
+    // Homepage-specific styles (async)
     if ( is_page(6) ) {
         wp_enqueue_style(
             'home-styles',
