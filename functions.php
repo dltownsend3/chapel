@@ -161,14 +161,6 @@ function template_scripts() {
         false
     );
 
-    // Theme styles
-    wp_enqueue_style(
-        'template-style',
-        get_stylesheet_uri(),
-        array(),
-        filemtime( get_template_directory() . '/style.css' )
-    );
-
     // Google Fonts
     wp_enqueue_style(
         'google-fonts',
@@ -177,70 +169,62 @@ function template_scripts() {
         null
     );
 
-    // Bootstrap
-    wp_enqueue_style(
-        'bootstrap-css',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
-        array(),
-        '5.3.3'
-    );
+    // Bootstrap (only if NOT home page, ID 6)
+    $bootstrap_deps = [];
+    if ( !is_page(6) ) {
+        wp_enqueue_style(
+            'bootstrap-css',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+            array(),
+            '5.3.3'
+        );
 
-    wp_enqueue_script(
-        'bootstrap-js',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
-        array(),
-        '5.3.3',
-        true
+        wp_enqueue_script(
+            'bootstrap-js',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+            array(),
+            '5.3.3',
+            true
+        );
+
+        $bootstrap_deps[] = 'bootstrap-css';
+    }
+
+    // Main theme stylesheet (always loads)
+    wp_enqueue_style(
+        'main-style',
+        get_stylesheet_uri(),
+        $bootstrap_deps, // only depends on Bootstrap if loaded
+        filemtime( get_stylesheet_directory() . '/style.css' )
     );
 
     // Homepage-specific styles
-    if ( is_page('home') || is_page(6) ) {
+    if ( is_page(6) ) {
         wp_enqueue_style(
             'home-styles',
             get_template_directory_uri() . '/home.css',
-            array('bootstrap-css'),
+            array(),
             filemtime( get_template_directory() . '/home.css' )
         );
     }
 }
 add_action( 'wp_enqueue_scripts', 'template_scripts' );
 
-
-function fix_styles_order() {
-    // Remove old style.css
-    wp_dequeue_style('theme-style'); // Only if it's enqueued under that handle
-
-    // Bootstrap first
-    wp_enqueue_style(
-        'bootstrap-css',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
-        [],
-        '5.3.3'
-    );
-
-    // Then your theme stylesheet
-    wp_enqueue_style(
-        'main-style',
-        get_stylesheet_uri(),
-        ['bootstrap-css'],
-        filemtime( get_template_directory() . '/style.css' )
-    );
-}
-add_action('wp_enqueue_scripts', 'fix_styles_order', 20);
-
-
-// Google fonts preconnect
+/**
+ * Google fonts preconnect
+ */
 function mytheme_resource_hints($hints, $relation_type) {
-  if ('preconnect' === $relation_type) {
-    $hints[] = 'https://fonts.googleapis.com';
-    $hints[] = [
-      'href' => 'https://fonts.gstatic.com',
-      'crossorigin' => true
-    ];
-  }
-  return $hints;
+    if ('preconnect' === $relation_type) {
+        $hints[] = 'https://fonts.googleapis.com';
+        $hints[] = [
+            'href' => 'https://fonts.gstatic.com',
+            'crossorigin' => true
+        ];
+    }
+    return $hints;
 }
 add_filter('wp_resource_hints', 'mytheme_resource_hints', 10, 2);
+
 
 
 /**
