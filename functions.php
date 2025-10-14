@@ -152,13 +152,13 @@ function template_scripts() {
         true // load in footer
     );
 
-    // Font Awesome
+    // Font Awesome (deferred)
     wp_enqueue_script(
         'fontawesome-kit',
         'https://kit.fontawesome.com/f80f0f2fbe.js',
         array(),
         null,
-        false
+        true // load in footer
     );
 
     // Google Fonts
@@ -184,7 +184,7 @@ function template_scripts() {
             'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
             array(),
             '5.3.3',
-            true
+            true // footer
         );
 
         $bootstrap_deps[] = 'bootstrap-css';
@@ -194,11 +194,11 @@ function template_scripts() {
     wp_enqueue_style(
         'main-style',
         get_stylesheet_uri(),
-        $bootstrap_deps, // only depends on Bootstrap if loaded
+        $bootstrap_deps, // depends on Bootstrap if loaded
         filemtime( get_stylesheet_directory() . '/style.css' )
     );
 
-    // Homepage-specific styles
+    // Homepage-specific styles (optional: load asynchronously)
     if ( is_page(6) ) {
         wp_enqueue_style(
             'home-styles',
@@ -206,9 +206,22 @@ function template_scripts() {
             array(),
             filemtime( get_template_directory() . '/home.css' )
         );
+
+        // Make home-styles async with media="print" trick
+        add_filter('style_loader_tag', function($tag, $handle) {
+            if ( $handle === 'home-styles' ) {
+                $tag = str_replace(
+                    "rel='stylesheet'",
+                    "rel='stylesheet' media='print' onload=\"this.media='all'\"",
+                    $tag
+                );
+            }
+            return $tag;
+        }, 10, 2);
     }
 }
 add_action( 'wp_enqueue_scripts', 'template_scripts' );
+
 
 /**
  * Google fonts preconnect
