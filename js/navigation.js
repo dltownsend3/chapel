@@ -67,7 +67,7 @@
 
 	// Toggle focus each time a menu link with children receive a touch event.
 	for ( const link of linksWithChildren ) {
-		link.addEventListener( 'touchstart', toggleFocus, false );
+		link.addEventListener( 'touchstart', toggleFocus, false, {passive: true} );
 	}
 
 	/**

@@ -27,7 +27,7 @@ if (!empty($settings)) {
 </div>
 <header id="masthead" class="site-header">
 	<nav id="site-navigation" class="main-navigation">
-		<?php echo '<a href="'.get_the_permalink(6).'" id="logo"><img src="'.$root.'/images/logow.svg" alt="Logo | '.get_bloginfo('name').'"></a>'; ?>
+		<?php echo '<a href="'.get_the_permalink(6).'" id="logo"><img src="'.$root.'/images/logow.svg" alt="Logo | '.get_bloginfo('name').'" fetchpriority="high"></a>'; ?>
 		<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false" aria-label="Navigation Toggle">
 			<span class="topline"></span>
 			<span class="midline"></span>

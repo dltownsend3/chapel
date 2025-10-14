@@ -169,18 +169,6 @@ function template_scripts() {
         null
     );
 
-    // Google Fonts async (media="print" trick)
-    add_filter('style_loader_tag', function($tag, $handle){
-        if ($handle === 'google-fonts') {
-            $tag = str_replace(
-                "rel='stylesheet'",
-                "rel='stylesheet' media='print' onload=\"this.media='all'\"",
-                $tag
-            );
-        }
-        return $tag;
-    }, 10, 2);
-
     // Bootstrap (only if NOT homepage, ID 6)
     $bootstrap_deps = [];
     if ( ! is_page(6) ) {
@@ -210,26 +198,38 @@ function template_scripts() {
         );
     }
 
-    // Homepage-specific styles (async)
+    // Homepage-specific styles
     if ( is_page(6) ) {
+        // Above-the-fold styles (critical CSS)
         wp_enqueue_style(
-            'home-styles',
-            get_template_directory_uri() . '/home.css',
-            array(),
-            filemtime( get_template_directory() . '/home.css' )
+            'fold-css',
+            get_template_directory_uri() . '/fold.css',
+            array(), // no dependencies, loads first
+            filemtime( get_stylesheet_directory() . '/fold.css' )
         );
-
-        add_filter('style_loader_tag', function($tag, $handle){
-            if ($handle === 'home-styles') {
-                $tag = str_replace(
-                    "rel='stylesheet'",
-                    "rel='stylesheet' media='print' onload=\"this.media='all'\"",
-                    $tag
-                );
-            }
-            return $tag;
-        }, 10, 2);
     }
+
+if ( is_page(6) ) {
+    wp_enqueue_style(
+        'home-styles',
+        get_template_directory_uri() . '/home.css',
+        array('fold-css'), // depend on fold.css so it loads after
+        filemtime( get_stylesheet_directory() . '/home.css' )
+    );
+
+    // Make home.css async with media=print
+    add_filter('style_loader_tag', function($tag, $handle){
+        if ($handle === 'home-styles') {
+            $tag = str_replace(
+                "rel='stylesheet'",
+                "rel='stylesheet' media='print' onload=\"this.media='all'\"",
+                $tag
+            );
+        }
+        return $tag;
+    }, 10, 2);
+}
+
 }
 add_action( 'wp_enqueue_scripts', 'template_scripts' );
 

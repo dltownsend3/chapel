@@ -1,0 +1,145 @@
+
+// Import variables and mixins.
+@import "abstracts/abstracts";
+
+/*--------------------------------------------------------------
+# Generic
+--------------------------------------------------------------*/
+
+/* Normalize
+--------------------------------------------- */
+@import "generic/normalize";
+
+/* Box sizing
+--------------------------------------------- */
+@import "generic/box-sizing";
+
+/*--------------------------------------------------------------
+# Base
+--------------------------------------------------------------*/
+@import "base/base";
+
+/*--------------------------------------------------------------
+# Components
+--------------------------------------------------------------*/
+@import "components/components";
+
+/*--------------------------------------------------------------
+# Plugins
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+# Utilities
+--------------------------------------------------------------*/
+
+/* Accessibility
+--------------------------------------------- */
+@import "utilities/accessibility";
+
+/* Alignments
+--------------------------------------------- */
+@import "utilities/alignments";
+
+.home-header{
+    background:url(images/congregation.jpg) center center/cover fixed no-repeat;
+    padding:sizer(150px) sizer(70px) sizer(70px) sizer(70px);
+    text-align: center;
+    h1{
+        font:400 sizer(55px)/1.2em var(--serif);
+        color:white;
+        text-shadow:(2px 2px 5px rgba(0,0,0,0.3));
+        text-wrap:pretty;
+        max-width:28ch;
+        margin:auto;
+        display: inline-block;
+        &:after{
+            content:'';
+            display: block;
+            width:sizer(200px);
+            height:5px;
+            margin:sizer(15px) auto sizer(20px) auto;
+            background:linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+        }
+    }
+    p{
+        color:white;
+        font:400 sizer(27px) var(--font);
+        text-align: center;
+        text-shadow:(1px 1px 4px rgba(0,0,0,0.3));
+        text-wrap:balance;
+        margin:0 auto sizer(50px) auto;
+        max-width: sizer(950px);
+    }
+}
+
+.home-cta{
+    background:var(--dblue2);
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:sizer(50px);
+    width:auto;
+    padding:sizer(25px) sizer(50px);
+    border-radius:100px;
+    .visit{
+        text-decoration: none;
+        background:white;
+        transition:background 0.2s;
+        color:var(--dblue2);
+        padding:sizer(15px) sizer(30px);
+        font-weight:700;
+        font-size:22px;
+        line-height:1em;
+        border-radius:100px;
+        span{white-space: nowrap;}
+        &:hover{background:var(--lgreen);}
+    }
+    div div{
+        display: inline-flex;
+        flex-wrap: wrap;
+        column-gap:sizer(20px);
+        align-items: center;
+        justify-content: center;
+        a{
+            text-decoration: none;
+            i{
+                font-size:sizer(30px);
+                vertical-align: middle;
+                transition:color 0.2s;
+                &.fa-spotify{color:#1db954;}
+                &.fa-podcast{color:#d56dfb;}
+                &.fa-facebook{color:#1877f2;}
+                &.fa-instagram{color:#e1306c;}
+            }
+            span{
+                color:white;
+                font-size:22px;
+                font-weight:300;
+                vertical-align: middle;
+                margin-left:5px;
+            }
+            &:hover{
+                i{color:white;}
+            }
+        }
+    }
+    h3{
+        color:white;
+        font-size:22px;
+        flex:100%;
+        margin: 0;
+        font-weight:700;
+    }
+}
+
+
+@media(max-width:640px){
+    .home-cta{
+        flex-direction: column;
+        border-radius:15px;
+    }
+    .home-header{
+        background-attachment: scroll;
+    }
+}

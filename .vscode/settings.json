@@ -8,7 +8,8 @@
   ],
   "liveSassCompile.settings.includeItems": [
     "/sass/style.scss",
-    "/sass/home.scss"
+    "/sass/home.scss",
+    "/sass/fold.scss"
   ],
   "liveSassCompile.settings.excludeList": [
     "**/node_modules/**",
