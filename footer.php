@@ -38,6 +38,8 @@ $settings = get_posts([
 				<a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode(get_field('address', $settings[0]->ID)); ?>" target=_><i class="fas fa-map-location"></i>&nbsp;<?php echo get_field('address', $settings[0]->ID); ?></a>
 				<br><br>
 				<a href="tel:3524485773"><i class="fas fa-mobile-screen-button"></i>&nbsp;(352) 448-5773</a>
+				<br><br>
+				<a href="mailto:info@thechapelgainesville.com"><i class="fas fa-paper-plane"></i>&nbsp;Info@TheChapelGainesville.com</a>
 			</p>
 			<?php } ?>
 			<p class="copyright">&copy;<?php echo date('Y') . ' ' . get_bloginfo('name'); ?></p>

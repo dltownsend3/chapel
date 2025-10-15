@@ -86,7 +86,7 @@ if ( $latest_sermon->have_posts() ) : ?>
 			</div>
 			<div class="location">
 				<h2>Sunday Service Location: Oak Hall School</h2>
-				<p>Our main weekly worship service is at Oak Hall School in the fine arts auditorium, Sunday mornings at 10:30 AM. Adult Bible Class is at 9 AM. (See the map below). <br><br><strong>1700 SW 75th Street. Gainesville, FL 32607</strong></p>
+				<p>Our main weekly worship service is at Oak Hall School, Gainesville, FL, in the fine arts auditorium. We gather Sunday mornings at 10:30 AM, with Adult Bible Class at 9 AM. (See the map below). <br><br><strong>1700 SW 75th Street. Gainesville, FL 32607</strong></p>
 				<a href="<?php echo get_the_permalink(3187); ?>">View Map <i class="fas fa-map-location-dot"></i></a>
 			</div>
 			<div class="word">
