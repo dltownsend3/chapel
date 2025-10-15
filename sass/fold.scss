@@ -45,11 +45,11 @@
     padding:sizer(150px) sizer(70px) sizer(70px) sizer(70px);
     text-align: center;
     h1{
-        font:400 sizer(55px)/1.2em var(--serif);
+        font:400 sizer(50px)/1.2em var(--serif);
         color:white;
         text-shadow:(2px 2px 5px rgba(0,0,0,0.3));
         text-wrap:pretty;
-        max-width:28ch;
+        max-width:33ch;
         margin:auto;
         display: inline-block;
         &:after{

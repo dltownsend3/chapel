@@ -36,7 +36,7 @@
     h2{
         color:var(--dblue2);
         font:400 sizer(45px)/1.2em var(--serif);
-        margin-bottom: 0.75em;
+        margin:0 0 0.75em 0;
         &:after{
             content:'';
             display: block;
@@ -53,7 +53,6 @@
         justify-content: center;
         gap:sizer(30px);
         flex-wrap:wrap;
-        margin-bottom: sizer(80px);
         a{
             text-decoration: none;
             flex:0 1 calc(100% / 3 - sizer(20px));
@@ -68,6 +67,7 @@
             img{
                 transition:opacity 0.2s, transform 0.2s;
                 object-fit:cover;
+                display: block;
             }
             h3{
                 font:400 sizer(30px)/1.2em var(--serif);
@@ -156,6 +156,8 @@
         text-decoration: underline;
         font-weight:600;
         font-size:sizer(18px);
+        margin-bottom:sizer(50px);
+        display: inline-block;
         &:hover, &:focus{
             color:var(--lgreen);
         }
@@ -171,7 +173,7 @@
         text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         color:white;
         font:400 sizer(45px)/1.2em var(--serif);
-        margin-bottom: 0.75em;
+        margin: 0 0 0.75em 0;
         &:after{
             content:'';
             opacity:0.5;
@@ -207,7 +209,7 @@
 }
 .sermon{
     background:linear-gradient(to right, var(--dblue2), var(--dblue));
-    padding:sizer(50px) sizer(25px);
+    padding:sizer(40px) sizer(25px);
     color:white;
     text-align: center;
     position: relative;
@@ -231,7 +233,7 @@
         text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         color:white;
         font:400 sizer(45px)/1.2em var(--serif);
-        margin-bottom: 0.5em;
+        margin: 0 0 0.5em 0;
         &:after{
             content:'';
             opacity:0.3;
@@ -247,7 +249,14 @@
         font-size:sizer(22px);
         font-weight:600;
         margin-bottom: 1em;
-        display: block;
+        display:flex;
+        flex-direction: row;
+        flex-wrap:wrap;
+        align-items: center;
+        justify-content: center;
+        column-gap:2em;
+        row-gap:1em;
+        span{}
     }
     a{
         text-decoration: none;
@@ -262,6 +271,7 @@
         h3{
             text-decoration: underline;
             font-family:var(--serif);
+            font-size:sizer(25px);
             transition:color 0.2s;
             color:var(--lgreen2);
         }
@@ -294,7 +304,7 @@
         text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         color:white;
         font:400 sizer(45px)/1.2em var(--serif);
-        margin-bottom: 0.5em;
+        margin: 0 0 0.5em 0;
         opacity:0.5;
         &:after{
             content:'';

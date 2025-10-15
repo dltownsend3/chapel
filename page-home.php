@@ -49,22 +49,55 @@ $settings = get_posts([
 					</div>
 				</div>
 			</div>
+			<div class="sermon">
+				<h2>Latest Sermon</h2>
+				<?php 
+$args = array(
+    'post_type'      => 'sermons',
+    'posts_per_page' => 1,
+    'post_status'    => 'publish'
+);
+$latest_sermon = new WP_Query( $args );
+
+if ( $latest_sermon->have_posts() ) : ?>
+    <?php while ( $latest_sermon->have_posts() ) : $latest_sermon->the_post(); ?>
+        <span class="date"><span><?php echo get_the_date(); ?></span> <span><?php echo get_the_terms( get_the_ID(), 'speaker' )[0]->name; ?></span> <span>
+<?php 
+			if(get_the_terms( get_the_ID(), 'book' )){
+				echo get_the_terms( get_the_ID(), 'book' )[0]->name;
+				if(get_field('passage_start')){
+					echo ' '.get_field('passage_start');
+					if(get_field('passage_end')){echo ' - '.get_field('passage_end');}
+				}
+				$book = get_the_terms( get_the_ID(), 'book' )[0]->name;
+			}
+ ?>
+			</span>
+		</span><!--.date-->
+        <a href="<?php echo get_the_permalink(); ?>">
+            <h3><?php echo get_the_title(); ?></h3>
+            <span>Listen <i class="fas fa-headphones"></i></span>
+        </a>
+    <?php endwhile; ?>
+    <?php wp_reset_postdata(); ?>
+<?php else : ?>
+    <p>No recent sermons found.</p>
+<?php endif; ?>
+			</div>
+			<div class="location">
+				<h2>Sunday Service Location: Oak Hall School</h2>
+				<p>Our main weekly worship service is at Oak Hall School in the fine arts auditorium, Sunday mornings at 10:30 AM. Adult Bible Class is at 9 AM. (See the map below). <br><br><strong>1700 SW 75th Street. Gainesville, FL 32607</strong></p>
+				<a href="<?php echo get_the_permalink(3187); ?>">View Map <i class="fas fa-map-location-dot"></i></a>
+			</div>
+			<div class="word">
+				<h2>A Word of Hope</h2>
+				<blockquote>
+					<p>&ldquo;<?php echo get_field('scripture'); ?>&rdquo;</p>
+					<cite>&mdash;<?php echo get_field('reference'); ?></cite>
+				</blockquote>
+				<a href="<?php echo get_the_permalink(3200); ?>">Searching?</a>
+			</div>
 			<div class="get-involved">
-				<h2>Get Involved</h2>
-				<div class="involved-btns">
-					<a href="<?php echo get_the_permalink(3193); ?>">
-						<div><img src="<?php echo $root; ?>/images/lifegroups.jpg" alt="Life Groups"></div>
-						<h3><span>Life Groups</span> <i class="fas fa-book-open"></i></h3>
-					</a>
-					<a href="/events/">
-						<div><img src="<?php echo $root; ?>/images/events.jpg" alt="Events"></div>
-						<h3><span>Events</span> <i class="fas fa-calendar"></i></h3>
-					</a>
-					<a href="<?php echo get_the_permalink(3196); ?>">
-						<div><img src="<?php echo $root; ?>/images/youthgroup.jpg" alt="Youth Group"></div>
-						<h3><span>Youth Group</span> <i class="fas fa-volleyball"></i></h3>
-					</a>
-				</div>
 				<h2>Upcoming Events</h2>
 				<div class="event-btns">
 <?php 
@@ -95,42 +128,21 @@ endif;
  ?>
 				</div>
 				<a href="/events/" class="calendar">View all Events <i class="fas fa-calendar"></i></a>
-			</div>
-			<div class="location">
-				<h2>Sunday Service Location: Oak Hall School</h2>
-				<p>Our main weekly worship service is at Oak Hall School in the fine arts auditorium, Sunday mornings at 10:30 AM. Adult Bible Class is at 9 AM. (See the map below). <br><br><strong>1700 SW 75th Street. Gainesville, FL 32607</strong></p>
-				<a href="<?php echo get_the_permalink(3187); ?>">View Map <i class="fas fa-map-location-dot"></i></a>
-			</div>
-			<div class="sermon">
-				<h2>Latest Sermon</h2>
-				<?php 
-$args = array(
-    'post_type'      => 'sermons',
-    'posts_per_page' => 1,
-    'post_status'    => 'publish'
-);
-$latest_sermon = new WP_Query( $args );
-
-if ( $latest_sermon->have_posts() ) : ?>
-    <?php while ( $latest_sermon->have_posts() ) : $latest_sermon->the_post(); ?>
-        <span class="date"><?php echo get_the_date(); ?> by <?php echo get_the_terms( get_the_ID(), 'speaker' )[0]->name; ?></span>
-        <a href="<?php echo get_the_permalink(); ?>">
-            <h3><?php echo get_the_title(); ?></h3>
-            <span>Listen <i class="fas fa-headphones"></i></span>
-        </a>
-    <?php endwhile; ?>
-    <?php wp_reset_postdata(); ?>
-<?php else : ?>
-    <p>No recent sermons found.</p>
-<?php endif; ?>
-			</div>
-			<div class="word">
-				<h2>A Word of Hope</h2>
-				<blockquote>
-					<p>&ldquo;<?php echo get_field('scripture'); ?>&rdquo;</p>
-					<cite>&mdash;<?php echo get_field('reference'); ?></cite>
-				</blockquote>
-				<a href="<?php echo get_the_permalink(3200); ?>">Searching?</a>
+				<h2>Get Involved</h2>
+				<div class="involved-btns">
+					<a href="<?php echo get_the_permalink(3193); ?>">
+						<div><img src="<?php echo $root; ?>/images/lifegroups.jpg" alt="Life Groups"></div>
+						<h3><span>Life Groups</span> <i class="fas fa-book-open"></i></h3>
+					</a>
+					<a href="/events/">
+						<div><img src="<?php echo $root; ?>/images/events.jpg" alt="Events"></div>
+						<h3><span>Events</span> <i class="fas fa-calendar"></i></h3>
+					</a>
+					<a href="<?php echo get_the_permalink(3196); ?>">
+						<div><img src="<?php echo $root; ?>/images/youthgroup.jpg" alt="Youth Group"></div>
+						<h3><span>Youth Group</span> <i class="fas fa-volleyball"></i></h3>
+					</a>
+				</div>
 			</div>
 		</article>
 
