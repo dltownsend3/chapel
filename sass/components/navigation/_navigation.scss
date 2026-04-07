@@ -1,15 +1,18 @@
 .site-header{
 	z-index: 9998;
 	position: relative;
+	position: sticky;
+	top:0;
 }
 .main-navigation {
-	position: fixed;
+	// position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
 	display: inline-block;
 	width: 100%;
-    padding:sizer(30px);
+    // padding:sizer(30px);
+	padding:sizer(15px) sizer(30px);
 	display: flex;
 	flex-wrap:nowrap;
 	flex-direction:row;
@@ -18,7 +21,7 @@
 	background:transparent;
 	transition:background 0.2s, padding 0.2s;
 	&.scrolled{
-		padding:sizer(15px) sizer(30px);
+		// padding:sizer(15px) sizer(30px);
 		background:rgba(14, 68, 53, 0.8);
 	}
 	.container-fluid{

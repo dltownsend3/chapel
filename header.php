@@ -26,6 +26,20 @@ if (!empty($settings)) {
 	<button class="search-close"><i class="fas fa-xmark"></i></button>
 </div>
 <header id="masthead" class="site-header">
+	<?php 
+	$expire = strtotime(get_field('announcement_expiration', $settings[0]->ID));
+	if ($expire && strtotime(date('Ymd')) < $expire) {
+		if(get_field('announcement', $settings[0]->ID)){
+			echo '<div id="announcement">';
+			if(get_field('announcement_link', $settings[0]->ID)){
+				echo '<a href="'.get_field('announcement_link', $settings[0]->ID).'"><span>'.get_field('announcement', $settings[0]->ID).'&nbsp;&nbsp;&mdash;&nbsp;&nbsp;Read More <i class="fas fa-arrow-circle-right"></i></span></a>';
+			}else{
+				echo '<span>'.get_field('announcement', $settings[0]->ID).'</span>';
+			}
+			echo '</div>'; // #announcement
+		}
+	}
+	?>
 	<nav id="site-navigation" class="main-navigation">
 		<?php echo '<a href="'.get_the_permalink(6).'" id="logo"><img src="'.$root.'/images/logow.svg" alt="Logo | '.get_bloginfo('name').'" fetchpriority="high"></a>'; ?>
 		<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false" aria-label="Navigation Toggle">

@@ -152,6 +152,30 @@ iframe {
 	width:100% !important;
 }
 
+#announcement{
+    background:var(--red);
+    position:sticky;
+    a{
+        text-decoration: none;
+        outline:none;
+        color:white;
+        &:hover{
+            color:white;
+            span{
+                color:var(--lgreen2);
+            }
+        }
+    }
+    span{
+        color:white;
+        font-size:sizer(25px);
+        font-weight:700;
+        padding:10px 15px;
+        display: block;
+        text-align: center;
+        transition:color 0.3s;
+    }
+}
 
 .the-content {
 	padding:sizer(40px) sizer(25px);

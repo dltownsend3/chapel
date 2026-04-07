@@ -135,8 +135,13 @@ $('.menu-toggle').on('click', function(event){
 
 $(document).ready(function () {
 	const $nav = $('.main-navigation');
+	var navHeight = $('#site-navigation').outerHeight();
+	$(window).on('resize scroll', function(){
+		navHeight = $('#site-navigation').outerHeight();
+	});
 	function handleScroll() {
-		$nav.toggleClass('scrolled', $(window).scrollTop() > 50);
+		$nav.toggleClass('scrolled', $(window).scrollTop() > navHeight);
+		$('#page').css('margin-top', -navHeight);
 	}
 	$(window).on('scroll', handleScroll);
 	handleScroll();
