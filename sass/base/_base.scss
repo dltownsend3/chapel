@@ -159,6 +159,7 @@ iframe {
         text-decoration: none;
         outline:none;
         color:white;
+		display: block;
         &:hover{
             color:white;
             span{
@@ -167,6 +168,7 @@ iframe {
         }
     }
     span{
+		display: block;
         color:white;
         font-size:sizer(25px);
         font-weight:700;
