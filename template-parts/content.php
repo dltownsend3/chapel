@@ -69,10 +69,12 @@
 			)
 		);
 if(is_singular()){
+    $post_type = get_post_type_object( get_post_type() );
+    $singular  = $post_type ? $post_type->labels->singular_name : 'Post';
 	the_post_navigation(
 		array(
-			'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'template' ) . '</span> <span class="nav-title">%title</span>',
-			'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'template' ) . '</span> <span class="nav-title">%title</span>',
+			'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous ' . esc_html( $singular ) . ':', 'template' ) . '</span> <span class="nav-title">%title</span>',
+			'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next ' . esc_html( $singular ) . ':', 'template' ) . '</span> <span class="nav-title">%title</span>',
 		)
 	);
 }

@@ -102,6 +102,17 @@ endif;
 				else if(get_field('passage_start')){$description .= ', verse '.get_field('passage_start');}
 			}
 			echo '<p class="text-center">'.$description.'</p>';
+
+if(is_singular()){
+    $post_type = get_post_type_object( get_post_type() );
+    $singular  = $post_type ? $post_type->labels->singular_name : 'Post';
+	the_post_navigation(
+		array(
+			'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous ' . esc_html( $singular ) . ':', 'template' ) . '</span> <span class="nav-title">%title</span>',
+			'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next ' . esc_html( $singular ) . ':', 'template' ) . '</span> <span class="nav-title">%title</span>',
+		)
+	);
+}
 			echo '</div>'; // .content-wrap
 			echo '</div>'; // .the-content
 

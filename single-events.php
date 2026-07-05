@@ -25,6 +25,12 @@ get_header();
 
 		<?php 
 			the_title( '<h1 class="entry-title">', '</h1>' );
+			if(get_field('datetime') OR get_field('location')){
+				echo '<p class="date">';
+				if(get_field('datetime')){echo '<i class="fas fa-calendar"></i>&nbsp;&nbsp;'.get_field('datetime');}
+				if(get_field('datetime')){echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-map-location"></i>&nbsp;&nbsp;'.get_field('location');}
+				echo '</p>';
+			}
 		?>
 		</header>
 

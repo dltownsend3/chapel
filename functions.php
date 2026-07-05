@@ -671,3 +671,58 @@ function add_custom_cache_headers() {
     }
 }
 add_action('send_headers', 'add_custom_cache_headers');
+
+
+
+
+function chapel_search_sermon_taxonomies( $search, $wp_query ) {
+	global $wpdb;
+
+	if ( is_admin() || ! $wp_query->is_main_query() || ! $wp_query->is_search() ) {
+		return $search;
+	}
+
+	$search_term = $wp_query->get( 's' );
+
+	if ( ! $search_term ) {
+		return $search;
+	}
+
+	$like = '%' . $wpdb->esc_like( $search_term ) . '%';
+
+	$taxonomies = array( 'speaker', 'series', 'topic', 'book' );
+
+	$taxonomy_placeholders = implode( ',', array_fill( 0, count( $taxonomies ), '%s' ) );
+
+	$extra_search = $wpdb->prepare(
+		" OR {$wpdb->posts}.ID IN (
+			SELECT tr.object_id
+			FROM {$wpdb->term_relationships} tr
+			INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+			INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+			WHERE tt.taxonomy IN ($taxonomy_placeholders)
+			AND (
+				t.name LIKE %s
+				OR t.slug LIKE %s
+			)
+		)",
+		array_merge( $taxonomies, array( $like, $like ) )
+	);
+
+	if ( $search ) {
+		$search = preg_replace( '/\)\s*$/', $extra_search . ')', $search );
+	}
+
+	return $search;
+}
+add_filter( 'posts_search', 'chapel_search_sermon_taxonomies', 10, 2 );
+
+
+function chapel_include_sermons_in_search( $query ) {
+	if ( is_admin() || ! $query->is_main_query() || ! $query->is_search() ) {
+		return;
+	}
+
+	$query->set( 'post_type', array( 'post', 'page', 'sermons' ) );
+}
+add_action( 'pre_get_posts', 'chapel_include_sermons_in_search' );

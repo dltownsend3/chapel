@@ -146,6 +146,33 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 	.site-main .page-header{background-position: center center;}
 }
 
+.post-type-archive{
+	.the-content{
+		font-size:sizer(22px);
+		article:not(:last-child){
+			margin-bottom: sizer(25px);
+		}
+		.date{
+			margin:0 0 0.5em 0;
+			color:var(--lgreen);
+			font-weight:500;
+		}
+	}
+}
+
+.single-events{
+	.date{
+		color:white;
+		font-weight:bold;
+		font-size:sizer(20px);
+		text-shadow:2px 2px 3px rgba(black, 0.35);
+		text-align: center;
+		margin: 0;
+		position: relative;
+		z-index: 10;
+	}
+}
+
 .single-sermons, .single-events{
 	.the-content{
 		.sermon-info{
@@ -392,7 +419,7 @@ body[class*=pastor], .page-leadership{
 			border: none;
 			&:after{
 				content:'\f4c0';
-				font-family:'Font Awesome 6 Free';
+				font-family:'Font Awesome 7 Free';
 				font-weight:900;
 				margin-left:10px;
 				color:var(--green);
@@ -415,6 +442,14 @@ body[class*=pastor], .page-leadership{
 	row-gap:8px;
 	.nav-item .nav-link:not(.active) {
 		border-bottom: 1px solid rgba(black, 0.1);
+	}
+}
+
+.search-results{
+	.the-content{
+		article:not(:last-child){
+			margin-bottom: sizer(25px);
+		}
 	}
 }
 

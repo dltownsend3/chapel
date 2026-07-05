@@ -113,13 +113,7 @@ if ( $event_query->have_posts() ) :
 	while ( $event_query->have_posts() ) : $event_query->the_post(); ?>
 					<a href="<?php echo get_the_permalink(); ?>">
 						<h3><?php echo get_the_title(); ?></h3>
-						<?php 
-						if(get_field('start_date')){echo '<span class="date">'.get_field('start_date');}
-						if(get_field('start_time')){echo ' at '.get_field('start_time');}
-						if(get_field('end_date')){echo ' &mdash; '.get_field('end_date');}
-						if(get_field('end_time')){echo ' at '.get_field('end_time');}
-						echo '</span>';
-						 ?>
+						<?php if(get_field('datetime')){echo '<span class="date">'.get_field('datetime').'</span>';} ?>
 						<?php the_excerpt(); ?>
 						<span class="more">Find Out More</span>
 					</a>

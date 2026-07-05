@@ -186,6 +186,9 @@ iframe {
 	&>*:first-child{
 		margin-top: 0;
 	}
+	.date{
+		color:#a1a1a1;
+	}
 	h2, h3{
 		font-family:var(--serif);
 		font-weight:700;
