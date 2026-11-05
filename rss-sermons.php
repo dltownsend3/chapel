@@ -39,10 +39,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
     while ($sermons->have_posts()) :
         $sermons->the_post();
 
-        // ----------------------------------------
         // Audio
-        // ----------------------------------------
-
         $audio_type = get_field('audio_type');
         $audio_url  = '';
 
@@ -71,10 +68,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
             $audio_length = filesize($audio_path);
         }
 
-        // ----------------------------------------
         // Get taxonomy terms
-        // ----------------------------------------
-
         $speaker = '';
         $series  = '';
         $book    = '';
@@ -101,10 +95,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
             $topic = $topic_terms[0]->name;
         }
 
-        // ----------------------------------------
         // Sermon image
-        // ----------------------------------------
-
         $image_url = '';
 
         if (get_field('header_image_type') === 'Url') {
@@ -139,10 +130,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
             }
         }
 
-        // ----------------------------------------
         // Description
-        // ----------------------------------------
-
         $description = '';
 
         // Avoid duplicate taxonomy descriptions
@@ -157,14 +145,8 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
         $passage_start = get_field('passage_start');
         $passage_end   = get_field('passage_end');
 
-        // Series takes precedence over book/topic
-        if ($series) {
-
-            $description = $speaker
-                ? $speaker . ' teaches from the series: ' . $series
-                : 'A teaching from the series: ' . $series;
-
-        } elseif ($book && $passage_start) {
+        // Book and passage take precedence over series
+        if ($book && $passage_start) {
 
             $passage = $book . ' ' . $passage_start;
 
@@ -175,6 +157,12 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
             $description = $speaker
                 ? $speaker . ' teaches from ' . $passage
                 : 'A teaching from ' . $passage;
+
+        } elseif ($series) {
+
+            $description = $speaker
+                ? $speaker . ' teaches from the series: ' . $series
+                : 'A teaching from the series: ' . $series;
 
         } elseif ($book) {
 

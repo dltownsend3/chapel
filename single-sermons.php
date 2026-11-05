@@ -17,10 +17,7 @@ get_header();
 while (have_posts()) :
 	the_post();
 
-	// ----------------------------------------
 	// Get sermon header image
-	// ----------------------------------------
-
 	$header_image = '';
 
 	if (get_field('header_image_type') === 'Url') {
@@ -31,10 +28,7 @@ while (have_posts()) :
 
 	$header_image = is_array($header_image) ? $header_image['url'] : $header_image;
 
-	// ----------------------------------------
 	// Get taxonomy terms
-	// ----------------------------------------
-
 	$speaker = '';
 	$series  = '';
 	$book    = '';
@@ -61,12 +55,8 @@ while (have_posts()) :
 		$topic = $topic_terms[0]->name;
 	}
 
-	// ----------------------------------------
 	// Series image fallback
-	// ----------------------------------------
-
 	if (empty($header_image) && $series_terms && !is_wp_error($series_terms)) {
-
 		$term = $series_terms[0];
 		$acf_term_id = $term->taxonomy . '_' . $term->term_id;
 
@@ -84,10 +74,7 @@ while (have_posts()) :
 		}
 	}
 
-	// ----------------------------------------
 	// Output header
-	// ----------------------------------------
-
 	if ($header_image) :
 		echo '<header class="page-header has-bg" style="background-image:url(' . esc_url($header_image) . ')">';
 	else :
@@ -95,13 +82,9 @@ while (have_posts()) :
 	endif;
 
 	the_title('<h1 class="entry-title">', '</h1>');
-
 	echo '</header>';
 
-	// ----------------------------------------
 	// Sermon content
-	// ----------------------------------------
-
 	echo '<div class="the-content">';
 	echo '<div class="content-wrap text-center">';
 	echo '<div class="sermon-info">';
@@ -122,18 +105,15 @@ while (have_posts()) :
 
 	// Passage display
 	if ($book) {
-
 		$passage_start = get_field('passage_start');
 		$passage_end   = get_field('passage_end');
 
 		echo '<p class="passage"><span>Passage: </span>' . esc_html($book);
 
-		if ($passage_start) {
+		if ($passage_start && $passage_end) {
+			echo ' ' . esc_html($passage_start) . '-' . esc_html($passage_end);
+		} elseif ($passage_start) {
 			echo ' ' . esc_html($passage_start);
-
-			if ($passage_end) {
-				echo '-' . esc_html($passage_end);
-			}
 		}
 
 		echo '</p>';
@@ -141,10 +121,7 @@ while (have_posts()) :
 
 	echo '</div>';
 
-	// ----------------------------------------
 	// Audio player
-	// ----------------------------------------
-
 	$audio = '';
 
 	if (get_field('audio_type') === 'Upload here') {
@@ -153,21 +130,16 @@ while (have_posts()) :
 		$audio = get_field('audio_url');
 	}
 
-	// Handle ACF audio upload fields returning an array
 	if (is_array($audio)) {
 		$audio = $audio['url'] ?? '';
 	}
 
 	if ($audio) {
 		echo '<audio controls><source src="' . esc_url($audio) . '" type="audio/mpeg"></audio>';
-
 		echo '<div class="download"><a href="' . esc_url($audio) . '" download><span>Download</span> <i class="fas fa-download"></i></a></div>';
 	}
 
-	// ----------------------------------------
 	// Description
-	// ----------------------------------------
-
 	$description = '';
 
 	// Avoid duplicate taxonomy descriptions
@@ -182,14 +154,8 @@ while (have_posts()) :
 	$passage_start = get_field('passage_start');
 	$passage_end   = get_field('passage_end');
 
-	// Series takes precedence over book/topic
-	if ($series) {
-
-		$description = $speaker
-			? $speaker . ' teaches from the series: ' . $series
-			: 'A teaching from the series: ' . $series;
-
-	} elseif ($book && $passage_start) {
+	// Book and passage take precedence over series
+	if ($book && $passage_start) {
 
 		$passage = $book . ' ' . $passage_start;
 
@@ -200,6 +166,12 @@ while (have_posts()) :
 		$description = $speaker
 			? $speaker . ' teaches from ' . $passage
 			: 'A teaching from ' . $passage;
+
+	} elseif ($series) {
+
+		$description = $speaker
+			? $speaker . ' teaches from the series: ' . $series
+			: 'A teaching from the series: ' . $series;
 
 	} elseif ($book) {
 
@@ -220,20 +192,13 @@ while (have_posts()) :
 
 	echo '<p class="text-center">' . esc_html($description) . '</p>';
 
-	// ----------------------------------------
 	// Sermon content
-	// ----------------------------------------
-
 	if (!empty(get_the_content())) {
 		the_content();
 	}
 
-	// ----------------------------------------
 	// Previous / next sermon navigation
-	// ----------------------------------------
-
 	if (is_singular()) {
-
 		$post_type = get_post_type_object(get_post_type());
 		$singular  = $post_type ? $post_type->labels->singular_name : 'Post';
 
